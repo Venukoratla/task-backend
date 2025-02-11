@@ -53,11 +53,6 @@ export const changeUserRole = async (req, res) => {
   try {
     const { userId } = req.params;
     const { role } = req.body;
-
-    if (!["admin"].includes(role)) {
-      return res.status(400).json({ message: "Invalid role" });
-    }
-
     await User.findByIdAndUpdate(userId, { role });
 
     res.json({ message: "User role updated successfully" });
@@ -82,9 +77,10 @@ export const getUserTasks = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const { status, description } = req.body;
+    console.log(status);
     const task = await Task.findByIdAndUpdate(
       req.params.taskId,
-      { status, description },
+      { priority: status, description },
       { new: true }
     );
 
